@@ -1,0 +1,18 @@
+---
+version: "3"
+services:
+  jenkins:
+    build:
+      context: jenkins
+    ports:
+      - 8080:8080
+    environment:
+      - CASC_JENKINS_CONFIG=/var/jenkins_home/casc_configs
+      - JAVA_OPTS="-Djenkins.install.runSetupWizard=false"
+    volumes:
+      - "./jenkins/casc_configs:/var/jenkins_home/casc_configs:ro"
+  nginx:
+    build:
+      context: nginx
+    ports:
+      - 80:80

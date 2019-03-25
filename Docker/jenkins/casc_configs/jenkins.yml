@@ -1,0 +1,23 @@
+---
+# Jenkins Config as Code
+# See https://github.com/jenkinsci/configuration-as-code-plugin/blob/master/README.md
+# and https://plugins.jenkins.io/configuration-as-code
+# plugins:
+#   required:
+#     blueocean: latest
+#     workflow-aggregator: latest
+#     pipeline-maven: latest
+jenkins:
+  authorizationStrategy: unsecured
+  systemMessage: |
+    This is the best of all possible system messages
+  securityRealm:
+    local:
+      users:
+        - id: admin
+          password: password
+  numExecutors: 3
+unclassified:
+  location: 
+    url: https://404174f4.ngrok.io/
+    adminAddress: admin@admin.com
