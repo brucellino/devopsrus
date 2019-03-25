@@ -18,6 +18,6 @@ jenkins:
           password: password
   numExecutors: 3
 unclassified:
-  location: 
+  location:
     url: https://404174f4.ngrok.io/
     adminAddress: admin@admin.com
