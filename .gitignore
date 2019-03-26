@@ -7,3 +7,10 @@
 
 # .tfvars files
 *.tfvars
+
+# Ansible
+## secret yml files
+secrets.yml
+
+## Retry files
+*.retry

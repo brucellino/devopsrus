@@ -1,0 +1,76 @@
+---
+# Playbook for Deploying jenkins_job
+- hosts: localhost
+  name: Foundation
+  tasks:
+    - name: Include secrets
+      include_vars:
+        dir: vars/
+    - name: find AMI
+      ec2_ami_facts:
+        aws_secret_key: "{{ aws_secret_key }}"
+        owners: 099720109477
+        region: "{{ aws.region }}"
+        aws_access_key: "{{ aws_access_key }}"
+        filters:
+          name: "ubuntu/images/hvm-ssd/*bionic*"
+        validate_certs: yes
+      register: base_ami
+    # - name: debug ami
+    #   debug:
+    #     var: base_ami.images[0]
+    - name: Ensure my ssh key is present
+      ec2_key:
+          name: bruce # required. Name of the key pair.
+          force: true # not required. Force overwrite of already existing key pair if key has changed.
+          wait_timeout: 300 # not required. How long before wait gives up, in seconds. This option has no effect since version 2.5.
+          wait: true # not required. Wait for the specified action to complete before returning. This option has no effect since version 2.5.
+          aws_secret_key: "{{ aws_secret_key }}"
+          aws_access_key: "{{ aws_access_key }}"
+          region: "{{ aws.region }}"
+          key_material: "{{ lookup('url', 'https://github.com/brucellino.keys') }}"
+          state: present # not required. choices: present;absent. create or delete keypair
+          validate_certs: yes # not required. When set to "no", SSL certificates will not be validated for boto versions >= 2.6.0.
+    - name: Ensure Instance is up
+      ec2_instance:
+        image:
+          id: "{{ base_ami.images[0].image_id }}"
+        wait: true
+        aws_secret_key: "{{ aws_secret_key }}"
+        aws_access_key: "{{ aws_access_key }}"
+        wait_timeout: 600
+        name: jenkins-sandbox
+        instance_type: t2.micro
+        state: present
+        tags:
+          name: Jenkins
+          created_by: brucellino
+        validate_certs: yes
+        region: "{{ aws.region }}"
+        network:
+          assign_public_ip: true
+        security_group: molecule
+        key_name: bruce
+      register: jenkins_host
+    - name: Add Jenkins Host to group
+      add_host:
+        name: "{{ jenkins_host.instances[0].public_dns_name }}"  # required. The hostname/ip of the host to add to the inventory, can include a colon and a port number.
+        groups: jenkins # not required. The groups to add the hostname to, comma separated.
+
+- name: Get Python onto the host
+  hosts: jenkins
+  remote_user: ubuntu
+  gather_facts: false
+  vars:
+    ansible_ssh_private_key_file: /home/becker/.ssh/id_rsa
+  tasks:
+    - raw: apt-get install -y python
+      become: true
+
+- name: Provision the host
+  hosts: jenkins
+  remote_user: ubuntu
+  vars:
+    ansible_ssh_private_key_file: /home/becker/.ssh/id_rsa
+  tasks:
+    - setup:
