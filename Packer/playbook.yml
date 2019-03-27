@@ -12,4 +12,14 @@
     tags:
     - slack
   roles:
-  
+  - { role: brucellino.docker, become: true }
+  post_tasks:
+  - name: Inform the team of the end of docker provisioning
+    slack:
+        token: "{{ slack_token }}"
+        username: "Orchy McConfigface on {{ inventory_hostname }}"
+        color: good
+        parse: full
+        link_names: 1
+        msg: "CI Server now has docker on it :whale:"
+        validate_certs: yes
