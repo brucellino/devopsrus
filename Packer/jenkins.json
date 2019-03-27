@@ -25,7 +25,8 @@
     {
       "type": "ansible-local",
       "playbook_file": "playbook.yml",
-      "extra_arguments": "-e slack_token={{ user `slack_token` }}"
+      "extra_arguments": "-e slack_token={{ user `slack_token` }}",
+      "galaxy_file": "requirements.yml"
     }
   ]
 }
