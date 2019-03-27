@@ -19,7 +19,7 @@ It is a purely personal project.
 
 ### Assumptions
 
-The following assumptions are made:
+**The following assumptions are made**:
 
 - Multiple teams are working on multiple projects, not all of them need to be
   integrated with each other
@@ -60,3 +60,8 @@ language(s) and nothing else. The following assumptions are made:
 2. Docker-compose is installed on the host.
 
 These assumptions can be satisfied in several ways, for now I am using an EC2 instance, provisioned with an Ansible role.
+
+### Utility compute clouds
+
+As mentioned in [assumptions](#assumptions), deployment to arbitrary cloud platforms is assumed -- for now we assume Azure and AWS.
+In order to actually deploy and provision services on these clouds, you will need the relevant access tokens.
