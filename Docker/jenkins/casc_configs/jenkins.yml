@@ -17,6 +17,57 @@ jenkins:
         - id: admin
           password: password
   numExecutors: 3
+  clouds:
+    - docker:
+        name: "docker"
+        dockerApi:
+          dockerHost:
+            uri: "unix:///var/run/docker.sock"
+        templates:
+          - labelString: "docker-agent"
+            dockerTemplateBase:
+              image: "jenkins/slave"
+              volumes:
+                - hello:/hello
+                - world:/world
+              environmentsString: |
+                hello=world
+                foo=bar
+            remoteFs: "/home/jenkins/agent"
+            connector:
+              attach:
+                user: "jenkins"
+            instanceCapStr: "10"
+    # - amazonEC2:
+    #     cloudName: "docker-agents"
+    #     credentialsId: "jenkins-aws"
+    #     privateKey: "${EC2_PRIVATE_KEY}"
+    #     region: "eu-central-1"
+    #     templates:
+    #     - ami: "ami-xyz"
+    #       amiType:
+    #         unixData:
+    #           sshPort: "22"
+    #       associatePublicIp: false
+    #       connectBySSHProcess: false
+    #       connectUsingPublicIp: false
+    #       deleteRootOnTermination: false
+    #       description: "docker"
+    #       ebsOptimized: false
+    #       idleTerminationMinutes: "10"
+    #       labelString: "docker ubuntu linux"
+    #       mode: NORMAL
+    #       monitoring: false
+    #       numExecutors: 1
+    #       remoteAdmin: "ubuntu"
+    #       securityGroups: "docker"
+    #       stopOnTerminate: false
+    #       type: T2Micro
+    #       useDedicatedTenancy: false
+    #       useEphemeralDevices: false
+    #       usePrivateDnsName: false
+    #     useInstanceProfileForCredentials: false
+
 unclassified:
   location:
     url: https://404174f4.ngrok.io/

@@ -6,3 +6,6 @@ job-dsl:latest
 gradle:latest
 git:latest
 github:latest
+docker-commons:latest
+docker-plugin:latest
+ec2:latest
