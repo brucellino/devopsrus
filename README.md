@@ -2,10 +2,20 @@
 
 Infrastructure code for delivering a DevOps pipeline in the ☁️
 
+## TL;DR
+
+This repository contains a few directories with demonstrators of using various tools
+
+- [Ansible](Ansible): playbooks and vars for delivering various services
+- [Docker](Docker): Docker and docker-compose service definitions
+- [Packer](Packer): Packer templates for producing artifacts such as AMIs
+- [Terraform](Terraform): Terraform plans for provisioning louds with the services we want.
+
 ## Purpose
 
 This repository is for hosting the code necessary to stand up an automation
-environment for DevOps teams. It is a purely personal project.
+environment for DevOps teams.
+It is a purely personal project.
 
 ### Assumptions
 
@@ -20,11 +30,12 @@ The following assumptions are made:
 ### Workflow
 
 <!-- insert workflow diagrams here -->
+_TODO_
 
 ## Toolset
 
 I use the following toolset to build, test, deploy and hopefully monitor the
-platform.
+platform:
 
 ### Core tools and Orchestration
 
@@ -43,4 +54,9 @@ on the deployment.
 ### Configuration and Provisioning
 
 Application configuration is done with the relevant toolset of the project
-language(s) and nothing else.
+language(s) and nothing else. The following assumptions are made:
+
+1. A host with a Docker endpoint is running
+2. Docker-compose is installed on the host.
+
+These assumptions can be satisfied in several ways, for now I am using an EC2 instance, provisioned with an Ansible role.
