@@ -11,6 +11,7 @@
 # Ansible
 ## secret yml files
 secrets.yml
+secrets.json
 
 ## Retry files
 *.retry
