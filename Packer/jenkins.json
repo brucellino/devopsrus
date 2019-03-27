@@ -17,8 +17,8 @@
     {
       "type": "shell",
       "inline": [
-        "sudo apt-get update && sudo apt-get install -y python",
-        "sudo apt-get install -y python-pip python-dev",
+        "sudo apt-get -qq update && sudo apt-get -qq install -y python",
+        "sudo apt-get -qq install -y python-pip python-dev",
         "sudo pip install ansible"
       ]
     },
