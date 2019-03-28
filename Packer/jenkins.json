@@ -9,7 +9,7 @@
       "instance_type": "t2.micro",
       "ssh_username": "ubuntu",
       "ami_name": "jenkins_AMI {{timestamp}}",
-      "ami_description": "The Jenkins base",
+      "ami_description": "Docker base for Jenkins",
       "associate_public_ip_address": true
     }
   ],
@@ -17,9 +17,11 @@
     {
       "type": "shell",
       "inline": [
-        "sudo apt-get -qq update && sudo apt-get -qq install -y python",
+        "sudo add-apt-repository \"deb http://archive.ubuntu.com/ubuntu $(lsb_release -sc) main universe restricted multiverse\"",
+        "sudo apt-get -qq update && sudo apt-get -qq install -y python-minimal python3-minimal",
         "sudo apt-get -qq install -y python-pip python-dev",
-        "sudo pip install ansible"
+        "sudo pip install ansible",
+        "sudo mkdir -p /deploy/Docker"
       ]
     },
     {
@@ -27,6 +29,19 @@
       "playbook_file": "playbook.yml",
       "extra_arguments": "-e slack_token={{ user `slack_token` }}",
       "galaxy_file": "requirements.yml"
-    }
+    },
+    {
+      "type": "file",
+      "source": "../Docker/",
+      "destination": "/deploy"
+    },
+     {
+       "type": "shell",
+       "inline": [
+         "cd /deploy",
+         "ls",
+         "docker-compose up --build -d"
+       ]
+     }
   ]
 }
