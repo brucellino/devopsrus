@@ -19,29 +19,15 @@
       "inline": [
         "sudo add-apt-repository \"deb http://archive.ubuntu.com/ubuntu $(lsb_release -sc) main universe restricted multiverse\"",
         "sudo apt-get -qq update && sudo apt-get -qq install -y python-minimal python3-minimal",
-        "sudo apt-get -qq install -y python-pip python-dev",
-        "sudo pip install ansible",
-        "sudo mkdir -p /deploy/Docker"
+        "sudo apt-get -qq install -y python-pip python-dev"
       ]
     },
     {
-      "type": "ansible-local",
+      "type": "ansible",
       "playbook_file": "playbook.yml",
       "extra_arguments": "-e slack_token={{ user `slack_token` }}",
-      "galaxy_file": "requirements.yml"
-    },
-    {
-      "type": "file",
-      "source": "../Docker/",
-      "destination": "/deploy"
-    },
-     {
-       "type": "shell",
-       "inline": [
-         "cd /deploy",
-         "ls",
-         "docker-compose up --build -d"
-       ]
-     }
+      "groups": "jenkins-hosts",
+      "host_alias": "awsome-jenkins"
+    }
   ]
 }

@@ -1,3 +1,13 @@
 ---
+# AWS variables.
 aws:
-  region: eu-west-1
+  # the region we are using
+  region: "eu-west-1"
+  # The name of the instance as it will show in the dashboard
+  instance_name: "jenkins-sandbox"
+  # The type of instance we're provisioning
+  instance_type: t2.micro
+  # Tags which will be applied to the instance.
+  tags:
+    - Name: Jenkins
+    - created_by: brucellino

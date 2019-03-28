@@ -39,12 +39,10 @@
         aws_secret_key: "{{ aws_secret_key }}"
         aws_access_key: "{{ aws_access_key }}"
         wait_timeout: 600
-        name: jenkins-sandbox
-        instance_type: t2.micro
+        name: "{{ aws.instance_name }}"
+        instance_type: "{{{ aws.instance_type }}"
         state: present
-        tags:
-          name: Jenkins
-          created_by: brucellino
+        tags: "{{ aws.tags }}"
         validate_certs: yes
         region: "{{ aws.region }}"
         network:
@@ -72,5 +70,10 @@
   remote_user: ubuntu
   vars:
     ansible_ssh_private_key_file: /home/becker/.ssh/id_rsa
-  tasks:
-    - setup:
+  roles:
+    - { role: brucellino.docker, become: true }
+
+- name: Put the app on the host
+  hosts: jenkins
+  remote_user: ubuntu
+  

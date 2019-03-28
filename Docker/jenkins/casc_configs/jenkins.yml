@@ -2,11 +2,8 @@
 # Jenkins Config as Code
 # See https://github.com/jenkinsci/configuration-as-code-plugin/blob/master/README.md
 # and https://plugins.jenkins.io/configuration-as-code
-# plugins:
-#   required:
-#     blueocean: latest
-#     workflow-aggregator: latest
-#     pipeline-maven: latest
+# ----- #
+# Core Jenkins configuration - authn/z, executors, clouds
 jenkins:
   authorizationStrategy: unsecured
   systemMessage: |
@@ -38,37 +35,23 @@ jenkins:
               attach:
                 user: "jenkins"
             instanceCapStr: "10"
-    # - amazonEC2:
-    #     cloudName: "docker-agents"
-    #     credentialsId: "jenkins-aws"
-    #     privateKey: "${EC2_PRIVATE_KEY}"
-    #     region: "eu-central-1"
-    #     templates:
-    #     - ami: "ami-xyz"
-    #       amiType:
-    #         unixData:
-    #           sshPort: "22"
-    #       associatePublicIp: false
-    #       connectBySSHProcess: false
-    #       connectUsingPublicIp: false
-    #       deleteRootOnTermination: false
-    #       description: "docker"
-    #       ebsOptimized: false
-    #       idleTerminationMinutes: "10"
-    #       labelString: "docker ubuntu linux"
-    #       mode: NORMAL
-    #       monitoring: false
-    #       numExecutors: 1
-    #       remoteAdmin: "ubuntu"
-    #       securityGroups: "docker"
-    #       stopOnTerminate: false
-    #       type: T2Micro
-    #       useDedicatedTenancy: false
-    #       useEphemeralDevices: false
-    #       usePrivateDnsName: false
-    #     useInstanceProfileForCredentials: false
-
+# Miscellaneous configuration outside of core Jenkins configuration
+# Some of these are plugin-dependent.
 unclassified:
   location:
-    url: https://404174f4.ngrok.io/
+    url: http://2c75b714.ngrok.io
     adminAddress: admin@admin.com
+  # slackNotifier: # Slack notification plugin configuration
+  #   teamDomain: cicddemo-miguelnge
+  #   tokenCredentialId: slack-token
+
+# Credentials configured for interacting with external services
+credentials:
+  system:
+    domainCredentials:
+      - credentials:
+          - string:
+              scope: GLOBAL
+              id: slack-token
+              secret: '${SLACK_TOKEN}'
+              description: Slack token

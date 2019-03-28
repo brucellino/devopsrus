@@ -9,3 +9,5 @@ github:latest
 docker-commons:latest
 docker-plugin:latest
 ec2:latest
+gitlab-plugin:latest
+slack-plugin: latest

@@ -1,6 +1,5 @@
-- name: apply basic and common roles
-  # strategy: debug
-  hosts: localhost
+- name: Ensure docker is present
+  hosts: jenkins-hosts
   pre_tasks:
   - name: Inform the team of the start
     slack:
@@ -8,7 +7,7 @@
       color: normal
       link_names: 0
       token: "{{ slack_token }}"
-      username: "Orchy McConfigface on {{ inventory_hostname }}"
+      username: "Orchy McConfigface on {{ ansible_hostname }}"
     tags:
     - slack
   roles:
@@ -16,10 +15,58 @@
   post_tasks:
   - name: Inform the team of the end of docker provisioning
     slack:
-        token: "{{ slack_token }}"
-        username: "Orchy McConfigface on {{ inventory_hostname }}"
-        color: good
-        parse: full
-        link_names: 1
-        msg: "CI Server now has docker on it :whale:"
-        validate_certs: yes
+      token: "{{ slack_token }}"
+      username: "Orchy McConfigface on {{ inventory_hostname }}"
+      color: good
+      parse: full
+      link_names: 1
+      msg: "CI Server now has docker on it :whale:"
+      validate_certs: yes
+    tags:
+      - slack
+
+# - name: Deploy Jenkins
+#   hosts: localhost
+#   pre_tasks:
+#     - name: Inform the team of the start
+#       slack:
+#         msg: "Start CI server deployment on {{ inventory_hostname }}. This baby has {{ ansible_processor_count }} CPUs and {{ ansible_memory_mb.real.total }} MB of RAM "
+#         color: normal
+#         link_names: 0
+#         token: "{{ slack_token }}"
+#         username: "Orchy McConfigface on {{ inventory_hostname }}"
+#       tags:
+#         - slack
+#   tasks:
+#     - name: Ensure deploy dir is present
+#       file:
+#         path: /deploy
+#         force: no
+#         unsafe_writes: no
+#         group: root
+#         state: directory
+#         mode: "g+rwx"
+#         owner: root
+#         follow: yes
+#     - name: Copy the docker configs
+#       copy:
+#           dest: /deploy
+#           directory_mode: yes
+#           force: yes
+#           remote_src: no # not required. If C(no), it will search for I(src) at originating/master machine.,If C(yes) it will go to the remote/target machine for the I(src). Default is C(no).,Currently I(remote_src) does not support recursive copying.,I(remote_src) only works with C(mode=preserve) as of version 2.6.
+#           checksum: undefined # not required. SHA1 checksum of the file being transferred. Used to validate that the copy of the file was successful.,If this is not provided, ansible will use the local calculated checksum of the src file.
+#           seuser: undefined # not required. User part of SELinux file context. Will default to system policy, if applicable. If set to C(_default), it will use the C(user) portion of the policy if available.
+#           decrypt: yes # not required. This option controls the autodecryption of source files using vault.
+#           setype: undefined # not required. Type part of SELinux file context, C(_default) feature works as for I(seuser).
+#           group: undefined # not required. Name of the group that should own the file/directory, as would be fed to I(chown).
+#           content: undefined # not required. When used instead of I(src), sets the contents of a file directly to the specified value. For anything advanced or with formatting also look at the template module.
+#           unsafe_writes: no # not required. By default this module uses atomic operations to prevent data corruption or inconsistent reads from the target files, but sometimes systems are configured or just broken in ways that prevent this. One example is docker mounted files, which cannot be updated atomically from inside the container and can only be written in an unsafe manner.,This option allows Ansible to fall back to unsafe methods of updating files when atomic operations fail (however, it doesn't force Ansible to perform unsafe writes). IMPORTANT! Unsafe writes are subject to race conditions and can lead to data corruption.
+#           serole: undefined # not required. Role part of SELinux file context, C(_default) feature works as for I(seuser).
+#           mode: undefined # not required. Mode the file or directory should be. For those used to I(/usr/bin/chmod) remember that modes are actually octal numbers. You must either add a leading zero so that Ansible's YAML parser knows it is an octal number (like C(0644) or C(01777)) or quote it (like C('644') or C('1777')) so Ansible receives a string and can do its own conversion from string into number.  Giving Ansible a number without following one of these rules will end up with a decimal number which will have unexpected results.  As of version 1.8, the mode may be specified as a symbolic mode (for example, C(u+rwx) or C(u=rw,g=r,o=r)).  As of version 2.3, the mode may also be the special string C(preserve).  C(preserve) means that the file will be given the same permissions as the source file.
+#           selevel: s0 # not required. Level part of the SELinux file context. This is the MLS/MCS attribute, sometimes known as the C(range). C(_default) feature works as for I(seuser).
+#           owner: undefined # not required. Name of the user that should own the file/directory, as would be fed to I(chown).
+#           follow: no # not required. This flag indicates that filesystem links in the destination, if they exist, should be followed.
+#           validate: undefined # not required. The validation command to run before copying into place. The path to the file to validate is passed in via '%s' which must be present as in the example below. The command is passed securely so shell features like expansion and pipes won't work.
+#           attributes: undefined # not required. Attributes the file or directory should have. To get supported flags look at the man page for I(chattr) on the target system. This string should contain the attributes in the same order as the one displayed by I(lsattr).,C(=) operator is assumed as default, otherwise C(+) or C(-) operators need to be included in the string.
+#           backup: no # not required. Create a backup file including the timestamp information so you can get the original file back if you somehow clobbered it incorrectly.
+#           local_follow: yes # not required. This flag indicates that filesystem links in the source tree, if they exist, should be followed.
