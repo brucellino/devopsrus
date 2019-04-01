@@ -11,3 +11,4 @@ docker-plugin:latest
 ec2:latest
 gitlab-plugin:latest
 slack-plugin: latest
+scalabale-amazon-ecs
