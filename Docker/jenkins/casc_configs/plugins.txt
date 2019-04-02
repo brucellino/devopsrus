@@ -10,5 +10,11 @@ docker-commons:latest
 docker-plugin:latest
 ec2:latest
 gitlab-plugin:latest
-slack-plugin: latest
-scalabale-amazon-ecs
+slack-plugin:latest
+scalabale-amazon-ecs:latest
+amazon-ecr:latest
+amazon-ecs:latest
+github-oauth:latest
+github-issues:latest
+pipeline-githubnotify-step:latest
+github-pullrequest:latest
