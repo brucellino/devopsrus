@@ -11,10 +11,13 @@ docker-plugin:latest
 ec2:latest
 gitlab-plugin:latest
 slack-plugin:latest
+slack:latest
 scalabale-amazon-ecs:latest
 amazon-ecr:latest
-amazon-ecs:latest
+amazon-ecs:1.20-beta-2
 github-oauth:latest
 github-issues:latest
 pipeline-githubnotify-step:latest
 github-pullrequest:latest
+pipeline-github-lib:latest
+pipeline-github:latest
