@@ -6,7 +6,7 @@
       "secret_key": "{{user `aws_secret_key`}}",
       "region": "eu-west-1",
       "source_ami": "ami-0204cddbf060b2420",
-      "instance_type": "t2.micro",
+      "instance_type": "t2.medium",
       "ssh_username": "ubuntu",
       "ami_name": "jenkins_AMI {{timestamp}}",
       "ami_description": "Docker base for Jenkins",
