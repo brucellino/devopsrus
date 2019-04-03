@@ -1,2 +1,2 @@
 FROM nginx
-COPY jenkins.conf /etc/nginx/conf.d/defaut.conf
+COPY jenkins.conf /etc/nginx/conf.d/default.conf

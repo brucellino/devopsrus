@@ -5,10 +5,12 @@ services:
     build:
       context: jenkins
     ports:
-      - 8080:8080
+      - "8080:8080"
+      - "50000:50000"
     environment:
       - CASC_JENKINS_CONFIG=/var/jenkins_home/casc_configs/jenkins.yml
       - JAVA_OPTS="-Djenkins.install.runSetupWizard=false"
+      - JENKINS_OPTS=""
     volumes:
       - "./jenkins/casc_configs:/var/jenkins_home/casc_configs:ro"
       - "/var/run/docker.sock:/var/run/docker.sock"
@@ -18,3 +20,5 @@ services:
     ports:
       - 80:80
       - 443:443
+    links:
+      - jenkins
