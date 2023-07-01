@@ -14,7 +14,7 @@ slack-plugin:latest
 slack:latest
 scalabale-amazon-ecs:latest
 amazon-ecr:latest
-amazon-ecs:1.20-beta-2
+amazon-ecs:1.48
 github-oauth:latest
 github-issues:latest
 pipeline-githubnotify-step:latest
