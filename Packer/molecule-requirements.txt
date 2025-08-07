@@ -1,4 +1,4 @@
-molecule==25.6.0
+molecule==25.7.0
 docker==7.1.0
 anyconfig>=0.10.0 # not directly required, pinned by Snyk to avoid a vulnerability
 jinja2>=2.11.3 # not directly required, pinned by Snyk to avoid a vulnerability
